@@ -21,10 +21,15 @@ public interface OfferService {
     List<OfferDto> getOffersByCustomerId(int customerId);
     List<OfferDto> getOffersByPropertyId(int propertyId);
 
+    List<OfferDto> getOffersByOwnerId(int ownerId);
+
     void updateOffertoCont(int id);
 
     void cancelOfferByOwner(int id);
 
+    void rejectOfferByOwner(int id);
+
     List<OfferDto> getCustomerHistoryOffers(int customerId);
+
 
 }

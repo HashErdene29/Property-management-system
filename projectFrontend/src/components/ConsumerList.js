@@ -38,7 +38,7 @@ const ConsumerList = ({ offers, showStatus, showPrintReceipt, handlePrintReceipt
               <div>
                 <button
                   className="ml-2 px-2 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                  onClick={() => handlePrintReceipt(offer.id)}
+                  onClick={() => handlePrintReceipt(offer)}
                 >
                   Print Receipt
                 </button>

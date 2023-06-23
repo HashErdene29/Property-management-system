@@ -14,4 +14,6 @@ public interface MessageRepo extends JpaRepository<Message, Integer> {
     Message findById(int id);
 
     void deleteById(int id);
+
+    List<Message> findMessageByOwnerId(int ownerId);
 }

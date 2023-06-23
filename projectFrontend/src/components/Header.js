@@ -47,7 +47,6 @@ const Header = () => {
       [name]: value,
     }));
   };
-
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
     setPropertyData((prevState) => ({

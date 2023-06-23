@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Avatar from './Avatar';
 import ConsumerList from './ConsumerList';
+import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
+import MyDocument from './CreatePDF';
 
 const ConsumerTab = () => {
   const [activeTab, setActiveTab] = useState('history');
@@ -95,10 +97,38 @@ const ConsumerTab = () => {
     }
   };
 
-  const handlePrintReceipt = (id) => {
-    // You can implement the logic for printing the receipt here
-    console.log(`Printing receipt for offer with ID: ${id}`);
+
+  
+  const handlePrintReceipt = (offer) => {
+    // Generate the PDF document
+    const pdfDoc = <MyDocument offer={offer} />;
+    console.log(offer)
+
+    // Convert the PDF document to a blob
+    pdf(pdfDoc)
+      .toBlob()
+      .then((blob) => {
+        // Create a URL for the blob
+        const pdfUrl = URL.createObjectURL(blob);
+    
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = `receipt_${offer.id}.pdf`;
+    
+        // Append the link to the document body
+        document.body.appendChild(link);
+    
+        // Click the link to trigger the download
+        link.click();
+    
+        // Clean up the temporary link and URL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(pdfUrl);
+      });
   };
+  
+  
 
   const handleUnsaveOffer = async (id) => {
     try {

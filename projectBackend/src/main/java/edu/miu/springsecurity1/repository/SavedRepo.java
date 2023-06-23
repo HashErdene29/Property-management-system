@@ -19,4 +19,6 @@ public interface SavedRepo extends JpaRepository<Saved, Integer> {
     void deleteById(int id);
 
     Optional<Saved> findByCustomer_IdAndAndProperty_Id(int customerId, int propertyId);
+
+    List<Saved> findByProperty_Id(int property_id);
 }

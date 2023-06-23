@@ -13,4 +13,5 @@ public interface MessageService {
     MessageDto getById(int id);
 
     List<MessageDto> getAll();
+    List<MessageDto> getMessagesByOwner(int ownerId);
 }

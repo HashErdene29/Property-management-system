@@ -29,6 +29,11 @@ public class PropertyController {
         return propertyService.getAll();
     }
 
+    @GetMapping("/except")
+    public List<PropertyDto> getAllExceptSold() {
+        return propertyService.getAllExceptSold();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PropertyDto> getById(@PathVariable int id) {
         var property = propertyService.getById(id);
@@ -36,12 +41,21 @@ public class PropertyController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
-        propertyService.delete(id);
+    public String delete(@PathVariable int id) {
+        return propertyService.delete(id);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") int propertyId) {
+    public void update(@PathVariable("id") int propertyId, @RequestBody PropertyDto p) {
         //call service
+        System.out.println("fdghskj------------------------------" + propertyId + p);
+        propertyService.updatePropertyById(propertyId, p.getName(), p.getPrice(), p.getDescription());
     }
+
+    @GetMapping("/findby/{ownerId}")
+    public List<PropertyDto> getAllByOwnerId(@PathVariable int ownerId) {
+        return propertyService.getAllByOwnerId(ownerId);
+    }
+
+
 }

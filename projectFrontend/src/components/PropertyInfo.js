@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PropertyInfo = ({ property }) => {
   const [offerStatus, setOfferStatus] = useState(null);
@@ -154,6 +155,8 @@ const PropertyInfo = ({ property }) => {
     }
   };
 
+  const isPropertyOwner = property.owner.id === parseInt(user_id);
+
   return (
     <div className="bg-gray-800 text-white p-4 rounded-lg mb-2">
       <div className="flex items-center mb-4">
@@ -194,7 +197,8 @@ const PropertyInfo = ({ property }) => {
               Cancel
             </button>
           ) : null}
-          {offerStatus === "AVAILABLE" ? (
+
+          {offerStatus === "AVAILABLE" && !isPropertyOwner ?  (
             <button
               className="bg-blue-500 mr-1 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
               onClick={handlePlaceOffer}
@@ -203,13 +207,28 @@ const PropertyInfo = ({ property }) => {
               Place Offer
             </button>
           ) : null}
-          <button
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-            onClick={handleSaveProperty}
-            disabled={role_id === "2"}
-          >
-            {isSaved ? "Unsave" : "Save"}
-          </button>
+          {isPropertyOwner ? <Link
+              to={"/profile"}
+              className="bg-blue-500 mr-1 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+            >
+              Edit
+            </Link> : null}
+          {!isPropertyOwner ? (
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+              onClick={handleSaveProperty}
+              disabled={role_id === "2"}
+            >
+              {isSaved ? "Unsave" : "Save"}
+            </button>
+          ) : (
+            <Link
+              to={"/profile"}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+            >
+              Delete
+            </Link>
+          )}
         </div>
       </div>
     </div>

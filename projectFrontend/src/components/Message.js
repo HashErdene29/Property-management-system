@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAlert } from 'react-alert'
 
-const Message = () => {
+const Message = ({id, ownerID}) => {
   const [message, setMessage] = useState('');
   const role_id = localStorage.getItem("role_id");
+  const user_id = localStorage.getItem("user_id");
 
   const alert = useAlert()
 
@@ -15,20 +16,33 @@ const Message = () => {
   const handleSendMessage = async () => {
     try {
       const token = localStorage.getItem('token');
+      const body = {
+        message: message,
+        customer: {
+          id: user_id
+        },
+        property: {
+          id: id
+        },
+        owner: {
+          id: ownerID
+        }
+      };
 
       const response = await axios.post(
         'http://localhost:8080/api/v1/message',
-        { message },
+        body,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if(response.status === 200) {
-        alert.success("Message sent to owner")
+      if (response.status === 200) {
+        console.log(response.data)
+        alert.success("Message sent to owner");
       }
-      setMessage(''); 
+      setMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
     }

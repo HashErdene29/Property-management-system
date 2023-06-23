@@ -45,4 +45,13 @@ public class MessageServiceImpl implements MessageService {
                         .map( p -> modelMapper.map(p,MessageDto.class))
                         .collect(Collectors.toList());
     }
+
+    public List<MessageDto> getMessagesByOwner(int ownerId) {
+        var messages = messageRepo.findMessageByOwnerId(ownerId);
+        return
+                messages
+                        .stream()
+                        .map( p -> modelMapper.map(p,MessageDto.class))
+                        .collect(Collectors.toList());
+    }
 }

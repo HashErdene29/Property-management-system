@@ -39,4 +39,9 @@ public class MessageController {
         messageService.delete(id);
     }
 
+    @GetMapping("/findby/{ownerId}")
+    public List<MessageDto> getMessagesByOwnerId(@PathVariable int ownerId) {
+        return messageService.getMessagesByOwner(ownerId);
+    }
+
 }

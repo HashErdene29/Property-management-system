@@ -6,7 +6,7 @@ const Gallery = () => {
       <div>
         <img
           className="h-auto max-w-full rounded-lg"
-          src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg"
+          src="https://cdn.pixabay.com/photo/2016/11/18/17/46/house-1836070_1280.jpg"
           alt=""
         />
       </div>
@@ -14,35 +14,35 @@ const Gallery = () => {
         <div>
           <img
             className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
+            src="https://cdn.pixabay.com/photo/2016/11/29/03/53/house-1867187_1280.jpg"
             alt=""
           />
         </div>
         <div>
           <img
             className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
+            src="https://cdn.pixabay.com/photo/2016/09/22/11/55/kitchen-1687121_1280.jpg"
             alt=""
           />
         </div>
         <div>
           <img
             className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg"
+            src="https://cdn.pixabay.com/photo/2020/12/16/00/10/home-5835289_1280.jpg"
             alt=""
           />
         </div>
         <div>
           <img
             className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg"
+            src="https://cdn.pixabay.com/photo/2022/03/04/10/21/property-7046997_960_720.jpg"
             alt=""
           />
         </div>
         <div>
           <img
             className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg"
+            src="https://cdn.pixabay.com/photo/2018/07/27/00/32/interior-design-3564955_960_720.jpg"
             alt=""
           />
         </div>

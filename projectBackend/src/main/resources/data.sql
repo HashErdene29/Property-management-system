@@ -35,6 +35,8 @@ insert into offer(id, status, customer_id, property_id)
 values(1, 'PENDING', 13, 1);
 insert into offer(id, status, customer_id, property_id)
 values(2, 'SOLD', 13, 2);
+insert into offer(id, status, customer_id, property_id)
+values(3, 'PENDING', 13, 3);
 
 insert into message(id, message, customer_id, owner_id, property_id)
 values(1, 'Interested in your property. Can we discuss further?', 13, 12, 1);

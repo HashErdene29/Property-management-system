@@ -11,7 +11,7 @@ import lombok.Data;
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="seq2")
-    @SequenceGenerator(name = "seq2", initialValue = 3)
+    @SequenceGenerator(name = "seq2", initialValue = 4)
     private int id;
 
     @Enumerated(EnumType.STRING)

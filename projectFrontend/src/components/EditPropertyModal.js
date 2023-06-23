@@ -1,12 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const EditPropertyModal = ({ isOpen, onClose, onSubmit, propertyData, handlePropertyChange, handleAddressChange }) => {
+const EditPropertyModal = ({ isOpen, onClose, onSubmit, propertyData, onUpdate }) => {
+  const token = localStorage.getItem("token");
+  const user_id = localStorage.getItem("user_id");
+  const role_id = localStorage.getItem("role_id");
+  const [updatedPropertyData, setUpdatedPropertyData] = useState(propertyData);
+
+  useEffect(() => {
+    setUpdatedPropertyData(propertyData);
+  }, [propertyData]);
+
+  const handleEdit = () => {
+    const { name, price, description } = updatedPropertyData;
+    const requestBody = { name, price, description };
+
+    axios
+      .put(`http://localhost:8080/api/v1/property/${propertyData.id}`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        onUpdate(updatedPropertyData); 
+        onSubmit(); 
+      })
+      .catch((error) => {
+        console.error("Error updating property:", error);
+ 
+      });
+  };
+
+  const handlePropertyChange = (event) => {
+    const { name, value } = event.target;
+
+    setUpdatedPropertyData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   return (
-    <div className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-75 ${isOpen ? "flex" : "hidden"}`}>
+    <div
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-75 ${
+        isOpen ? "flex" : "hidden"
+      }`}
+    >
       <div className="relative w-full max-w-2xl">
         <div className="relative bg-white rounded-lg shadow max-h-500">
           <div className="flex items-start justify-between p-4 border-b rounded-t">
-            <h2 className="text-xl font-semibold text-gray-900">Add Property</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Edit Property
+            </h2>
             <button
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
@@ -35,49 +80,7 @@ const EditPropertyModal = ({ isOpen, onClose, onSubmit, propertyData, handleProp
                 className="w-full h-8 border border-gray-300 rounded-md px-3"
                 type="text"
                 name="name"
-                value={propertyData.name}
-                onChange={handlePropertyChange}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <div>
-                <label className="block text-sm font-medium mb-1">Bedrooms</label>
-                <input
-                  className="w-full h-8 border border-gray-300 rounded-md px-3"
-                  type="number"
-                  name="bedNo"
-                  value={propertyData.bedNo}
-                  onChange={handlePropertyChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Bathrooms</label>
-                <input
-                  className="w-full h-8 border border-gray-300 rounded-md px-3"
-                  type="number"
-                  name="bathNo"
-                  value={propertyData.bathNo}
-                  onChange={handlePropertyChange}
-                />
-              </div>
-            </div>
-            <div className="mb-2">
-              <label className="block text-sm font-medium mb-1">Square Footage</label>
-              <input
-                className="w-full h-8 border border-gray-300 rounded-md px-3"
-                type="number"
-                name="sqft"
-                value={propertyData.sqft}
-                onChange={handlePropertyChange}
-              />
-            </div>
-            <div className="mb-2">
-              <label className="block text-sm font-medium mb-1">Garage</label>
-              <input
-                className="w-full h-8 border border-gray-300 rounded-md px-3"
-                type="number"
-                name="garageNo"
-                value={propertyData.garageNo}
+                value={updatedPropertyData.name}
                 onChange={handlePropertyChange}
               />
             </div>
@@ -87,58 +90,31 @@ const EditPropertyModal = ({ isOpen, onClose, onSubmit, propertyData, handleProp
                 className="w-full h-8 border border-gray-300 rounded-md px-3"
                 type="number"
                 name="price"
-                value={propertyData.price}
+                value={updatedPropertyData.price}
                 onChange={handlePropertyChange}
               />
             </div>
             <div className="mb-2">
-              <label className="block text-sm font-medium mb-1">State</label>
-              <input
-                className="w-full h-8 border border-gray-300 rounded-md px-3"
-                type="text"
-                name="state"
-                value={propertyData.address.state}
-                onChange={handleAddressChange}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <div>
-                <label className="block text-sm font-medium mb-1">City</label>
-                <input
-                  className="w-full h-8 border border-gray-300 rounded-md px-3"
-                  type="text"
-                  name="city"
-                  value={propertyData.address.city}
-                  onChange={handleAddressChange}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Street</label>
-                <input
-                  className="w-full h-8 border border-gray-300 rounded-md px-3"
-                  type="text"
-                  name="street"
-                  value={propertyData.address.street}
-                  onChange={handleAddressChange}
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Zipcode</label>
-              <input
-                className="w-full h-8 border border-gray-300 rounded-md px-3"
-                type="text"
-                name="zipcode"
-                value={propertyData.address.zipcode}
-                onChange={handleAddressChange}
-              />
+              <label className="block text-sm font-medium mb-1">
+                Description
+              </label>
+              <textarea
+                className="w-full h-20 border border-gray-300 rounded-md px-3 py-2 resize-none"
+                name="description"
+                value={
+                  updatedPropertyData.description
+                    ? updatedPropertyData.description
+                    : ""
+                }
+                onChange={handlePropertyChange}
+              ></textarea>
             </div>
           </div>
           <div className="flex items-center justify-end p-6 border-t border-gray-200 rounded-b">
             <button
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
-              onClick={onSubmit}
+              onClick={handleEdit}
             >
               Edit
             </button>

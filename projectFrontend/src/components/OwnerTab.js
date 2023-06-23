@@ -1,11 +1,11 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import OwnerList from "./OwnerList";
 import MessageModal from "./MessageModal";
 import axios from "axios";
-import { useAlert } from 'react-alert'
+import { useAlert } from "react-alert";
 
 const OwnerTab = () => {
-  const alert = useAlert()
+  const alert = useAlert();
 
   const [activeTab, setActiveTab] = useState("offers");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +25,30 @@ const OwnerTab = () => {
     },
   ]);
 
+  useEffect(() => {
+
+    fetchOfferData();
+  }, []);
+
+  
+  const fetchOfferData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/offer/findbyowner/${user_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if(response.data) {
+        setOfferItems(response.data)
+      }
+    } catch (error) {
+      console.log("Error fetching listingItems:", error);
+    }
+  };
+
   const [listingItems, setListingItems] = useState([]);
 
   useEffect(() => {
@@ -38,7 +62,7 @@ const OwnerTab = () => {
             },
           }
         );
-        if(response.data) {
+        if (response.data) {
           setListingItems(response.data);
         }
       } catch (error) {
@@ -48,7 +72,6 @@ const OwnerTab = () => {
 
     fetchData();
   }, []);
-
 
   const [messageItems, setMessageItems] = useState([]);
 
@@ -63,8 +86,7 @@ const OwnerTab = () => {
             },
           }
         );
-        console.log(response.data)
-        if(response.data) {
+        if (response.data) {
           setMessageItems(response.data);
         }
       } catch (error) {
@@ -84,11 +106,56 @@ const OwnerTab = () => {
   const handleAccept = (itemId) => {
     // Handle accept logic
     console.log(`Accept item ${itemId}`);
+    axios.get(
+      `http://localhost:8080/api/v1/offer/updatecont/${itemId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then(response => {
+      if(response) {
+        fetchOfferData();
+      }
+    })
+
   };
 
   const handleReject = (itemId) => {
-    // Handle reject logic
     console.log(`Reject item ${itemId}`);
+    axios.get(
+      `http://localhost:8080/api/v1/offer/reject/${itemId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then(response => {
+      if(response) {
+        fetchOfferData();
+      }
+    })
+
+  };
+
+  const handleCancel = (itemId) => {
+    console.log(`Reject item ${itemId}`);
+    axios.get(
+      `http://localhost:8080/api/v1/offer/cancel/${itemId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then(response => {
+      if(response) {
+        fetchOfferData();
+      }
+    })
+
   };
 
   const handleEdit = (itemId) => {
@@ -97,7 +164,7 @@ const OwnerTab = () => {
   };
 
   const handleDelete = async (itemId) => {
-    console.log(itemId)
+    console.log(itemId);
     try {
       const response = await axios.delete(
         `http://localhost:8080/api/v1/property/${itemId}`,
@@ -107,12 +174,11 @@ const OwnerTab = () => {
           },
         }
       );
-      if(response.status === 200) {
-        setListingItems((prevItems) =>
-        prevItems.filter((item) => item.id !== itemId)
-      );
-      alert.success("Deleted property!")
-
+      if (response.status === 200) {
+        // Update the data
+        const updatedItems = listingItems.filter((item) => item.id !== itemId);
+        setListingItems(updatedItems);
+        alert.success("Deleted property!");
       }
     } catch (error) {
       console.log("Error deleting item:", error);
@@ -123,9 +189,21 @@ const OwnerTab = () => {
     setSelectedMessageId(messageId);
     setIsModalOpen(true);
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleDataUpdate = (updatedData) => {
+    setListingItems((prevItems) => {
+      const updatedItems = prevItems.map((item) => {
+        if (item.id === updatedData.id) {
+          return updatedData;
+        }
+        return item;
+      });
+      return updatedItems;
+    });
   };
 
   const renderTabContent = () => {
@@ -138,7 +216,9 @@ const OwnerTab = () => {
               showButtons
               handleAccept={handleAccept}
               handleReject={handleReject}
+              handleCancel={handleCancel}
               type="offers"
+              updateData={handleDataUpdate}
             />
           </div>
         );
@@ -151,6 +231,7 @@ const OwnerTab = () => {
               handleEdit={handleEdit}
               handleDelete={handleDelete}
               type="listing"
+              updateData={handleDataUpdate}
             />
           </div>
         );

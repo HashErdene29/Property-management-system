@@ -8,9 +8,14 @@ import java.util.List;
 public interface PropertyService {
     void save(PropertyDto p);
 
-    void delete(int id);
+    String delete(int id);
 
     PropertyDto getById(int id);
 
     List<PropertyDto> getAll();
+
+    List<PropertyDto> getAllByOwnerId(int ownerId);
+    void updatePropertyById(int id, String name, int price, String description);
+
+    List<PropertyDto> getAllExceptSold();
 }
