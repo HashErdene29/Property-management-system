@@ -3,6 +3,7 @@ UI recording - https://mum0-my.sharepoint.com/:v:/g/personal/khashe_baasandorj_m
 BackEnd recording - https://mum0-my.sharepoint.com/:v:/g/personal/khashe_baasandorj_miu_edu/ETr6ncBFP_tJrUD9ZqMRh94Bfqqb7O0BkcCZ1YYOryY0VQ?e=OxOhNz
 
 Group 6 
+
 Khash Erdene Baasandorj - 615722
 
 Enkhtsetseg Unurbayar - 110883
